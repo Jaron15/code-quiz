@@ -1,0 +1,18 @@
+.hidden {
+    display: none;
+}
+.intro {
+    font-style: bold;
+}
+.center {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    
+}
+.start-btn {
+    background-color: blueviolet;
+    border-radius: 10px;
+    border: 1px solid black;
+    color: white
+}
