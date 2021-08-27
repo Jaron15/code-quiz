@@ -38,7 +38,10 @@
   
 }
 .flex {
-    display: flex;
+    display: flex;  
+    flex-wrap: wrap;
+}
+.header-flex {
     width: 100%;
      justify-content: space-between; 
 }
@@ -54,4 +57,8 @@
 }
 .hs-show a:hover {
     color: blueviolet;
+}
+.hs-form h1{
+    width: 100%;
+    text-align: center;
 }

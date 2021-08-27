@@ -2,6 +2,10 @@ var startQuizBtn = document.getElementById("start-quiz-btn");
 var mainBody = document.getElementById("main-body");
 var insertQuestion = document.getElementById("question-box");
 var insertAnswers = document.getElementById("answers-box");
+var currentQuestion = 0;
+let timeLeft = 60;
+var answerContainer = document.getElementById("answers-box");
+var answerResponse = document.getElementById("answer-response");
 var questions = [
    { question: "Commonly used data types do NOT include:", 
      answers: [
@@ -40,15 +44,9 @@ var questions = [
          correctAnswer: "2",
      },
 ];
-var currentQuestion = 0;
 
-function startQuiz() {
-    //hide first screen 
-    var startQuizInfo = document.getElementById("start-quiz-info");
-   startQuizInfo.classList.add("hidden");
-    generateQuestion();
-    let timeLeft = 60;
 
+function startTimer(){
     let timer = setInterval(() => {
         timeLeft--;
         if (timeLeft <= 0) {
@@ -56,8 +54,14 @@ function startQuiz() {
         };
         document.getElementById("display-time").textContent = "Time Left: " + timeLeft;
     }, 1000);
+};
 
-    
+function startQuiz() {
+    //hide first screen 
+    var startQuizInfo = document.getElementById("start-quiz-info");
+   startQuizInfo.classList.add("hidden");
+    generateQuestion();
+    startTimer(); 
 };
 
  
@@ -69,7 +73,6 @@ function generateQuestion() {
  mainBody.appendChild(insertQuestion);
  
   // insert answer
-  var answerContainer = document.getElementById("answers-box");
   answerContainer.className= "question-list-box";
   mainBody.appendChild(answerContainer);
  var answerList = document.createElement("ul");
@@ -84,8 +87,7 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
  button.className = "button-style";
  li.appendChild(button);
  answerList.appendChild(li);
-//  mainBody.appendChild(insertAnswers);
-}
+};
 };
 
 
@@ -93,21 +95,50 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
 
 // high scores screen 
 
- document.getElementById("answers-box").addEventListener("click", function(event) {
+ answerContainer.addEventListener("click", function(event) {
     var clickedButton = event.target;
     var ansValue = clickedButton.value;
     if (ansValue !== questions[currentQuestion].correctAnswer) {
-        alert("wrong");
+       timeLeft = timeLeft-10;
+       function showWrong() {
+       var wrongMessage = document.createElement("p");
+       wrongMessage.textContent="Wrong!";
+       answerResponse.appendChild(wrongMessage);
+       setTimeout(() => {
+           wrongMessage.remove();
+       }, 1500);
     }
-    
-    if (currentQuestion === questions.length -1) {
-        alert("test")
+    showWrong();
+    }
+    else {
+        function showRight() {
+            var rightMessage = document.createElement("p");
+            rightMessage.textContent="Correct!";
+            answerResponse.appendChild(rightMessage);
+            setTimeout(() => {
+                rightMessage.remove();
+            }, 1500);
+         };
+         showRight();
     };
-    console.log(currentQuestion);
+    if (currentQuestion === questions.length -1) {
+        alert("end of test");
+        console.log(timeLeft);
+        localStorage.setItem('score', timeLeft);
+        enterHighscore();  
+    }; 
     currentQuestion++;
     generateQuestion();
     // console.log(questions.length);
   });
+  function enterHighscore() {
+    mainBody.classList.add("hidden");
+    var hsContentBox = document.getElementById("highscore-input-box");
+    document.getElementById("all-done").textContent = "All done!";
+    document.getElementById("score-display").textContent = "Your final score is " + timeLeft + ".";
+  
+
+  }
 
  
 
