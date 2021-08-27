@@ -136,7 +136,9 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     var hsContentBox = document.getElementById("highscore-input-box");
     document.getElementById("all-done").textContent = "All done!";
     document.getElementById("score-display").textContent = "Your final score is " + timeLeft + ".";
-  
+    var nameInput = document.createElement("input");
+    nameInput.setAttribute('type', 'text');
+    document.getElementById("initial-input").textContent = "Enter initials " + nameInput;
 
   }
 
