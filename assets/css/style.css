@@ -16,3 +16,42 @@
     border: 1px solid black;
     color: white
 }
+.question-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+.question-list-box {
+    display: flex;
+    justify-content: center;
+    
+    
+}
+.button-style {
+    background-color: blueviolet;
+    border-radius: 5px;
+    border: 1px solid black;
+    color: white;
+    width: 120px;
+    height: 40px;
+    margin: 5px;
+  
+}
+.flex {
+    display: flex;
+    width: 100%;
+     justify-content: space-between; 
+}
+.hs-show {
+    align-self: center;
+}
+.timer-show {
+    align-self: flex-end;
+}
+.hs-show a{
+    text-decoration: none;
+    color: black;
+}
+.hs-show a:hover {
+    color: blueviolet;
+}

@@ -47,24 +47,44 @@ function startQuiz() {
     var startQuizInfo = document.getElementById("start-quiz-info");
    startQuizInfo.classList.add("hidden");
     generateQuestion();
-}
+    let timeLeft = 60;
+
+    let timer = setInterval(() => {
+        timeLeft--;
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+        };
+        document.getElementById("display-time").textContent = "Time Left: " + timeLeft;
+    }, 1000);
+
+    
+};
 
  
 // function to generate next question
 function generateQuestion() {
- //insert first question and answer 
+ // insert question  
  insertAnswers.innerHTML = "";
  insertQuestion.innerHTML = "<h1>" + questions[currentQuestion].question + "</h1>";
  mainBody.appendChild(insertQuestion);
  
+  // insert answer
+  var answerContainer = document.getElementById("answers-box");
+  answerContainer.className= "question-list-box";
+  mainBody.appendChild(answerContainer);
+ var answerList = document.createElement("ul");
+ answerList.className= "question-list";
+ answerContainer.appendChild(answerList);
 for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
  var li = document.createElement("li");
+//  li.className = "question-list"
  var button = document.createElement("button");
  button.textContent = questions[currentQuestion].answers[i];
- button.setAttribute("value", i)
+ button.setAttribute("value", i);
+ button.className = "button-style";
  li.appendChild(button);
- insertAnswers.appendChild(li);
- mainBody.appendChild(insertAnswers);
+ answerList.appendChild(li);
+//  mainBody.appendChild(insertAnswers);
 }
 };
 
@@ -77,10 +97,18 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     var clickedButton = event.target;
     var ansValue = clickedButton.value;
     if (ansValue !== questions[currentQuestion].correctAnswer) {
-        alert("test");
+        alert("wrong");
     }
-    console.log(ansValue);
+    
+    if (currentQuestion === questions.length -1) {
+        alert("test")
+    };
+    console.log(currentQuestion);
     currentQuestion++;
     generateQuestion();
-  })
+    // console.log(questions.length);
+  });
+
+ 
+
   document.getElementById("start-quiz-btn").addEventListener("click", startQuiz);
