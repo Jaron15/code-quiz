@@ -83,5 +83,14 @@
 }
 .hs-list-box{
     font-size:3vh;
-    font-weight: bold
+    font-weight: bold;
+    flex-wrap: wrap;
+}
+.hs-list-class {
+    width: 100%;
+    text-align:center;
+}
+.shown { 
+    display: block !important;
+    
 }

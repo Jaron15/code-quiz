@@ -9,6 +9,8 @@ var answerContainer = document.getElementById("answers-box");
 var answerResponse = document.getElementById("answer-response");
 var startQuizInfo = document.getElementById("start-quiz-info");
 var scoreSubmit = document.getElementById("enter-hs");
+var highscoreScreen = document.getElementById("highscore-screen");
+var timeScores = document.getElementById("time-scores");
 var questions = [
    { question: "Commonly used data types do NOT include:", 
      answers: [
@@ -63,8 +65,11 @@ function startTimer(){
 
 function startQuiz() {
     //hide first screen 
-    
-   startQuizInfo.classList.add("hidden");
+    currentQuestion = 0;
+    timeLeft= 60;
+    startQuizInfo.classList.remove("shown");
+    mainBody.classList.add("shown");
+    timeScores.classList.remove("hidden");
     generateQuestion();
     startTimer(); 
 };
@@ -97,7 +102,7 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
 
 // end game function
 
-// high scores screen 
+
 
  answerContainer.addEventListener("click", function(event) {
     var clickedButton = event.target;
@@ -139,10 +144,12 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
  
   function enterHighscore() {
     clearInterval(remainingTime);
-    mainBody.classList.add("hidden");
+    scoreSubmit.classList.add("shown");
+    mainBody.classList.remove("shown");
     document.getElementById("all-done").textContent = "All done!";
     document.getElementById("score-display").textContent = "Your final score is " + timeLeft + ".";
     var nameInput = document.getElementById("initial-input");
+    nameInput.innerHTML = "";
     var label = document.createElement("label");
     label.setAttribute("for", "name-box")
     label.textContent = "Enter initials: ";
@@ -161,11 +168,16 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     button.addEventListener('click', function(event){
         var userInitials = document.querySelector("#name-box").value;
         event.preventDefault();
-
+        var local = JSON.parse(localStorage.getItem("highscores"));
+        if (local) {
+            highscores = local;
+        } 
+        console.log(highscores);
         highscores.push({
             name: userInitials,
             score: timeLeft
         })
+        console.log(highscores);
         highscores.sort(function (a, b) {
             return b.score - a.score;
         });
@@ -177,25 +189,67 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
 };
 
 function saveScore() {
-    scoreSubmit.classList.add("hidden");
+    scoreSubmit.classList.remove("shown");
     document.getElementById("time-scores").classList.add("hidden");
 
     scoreScreen();
 };
 
-function scoreScreen() {
-    var hsListBox = document.getElementById("hs-list-box");
-    var heading = document.createElement("h1").textContent = "High Scores";
-    hsListBox.append(heading);
-    var hsList = document.createElement("ol");
-    for (var i = 0; i < highscores.length; i++) {
-    var listItems = document.createElement("li")
-    var hsName  = localStorage.getItem("highscores").name;
-    var hsScore = localStorage.getItem("highscores").score;
-    listItems.append(hsName, hsScore);
-    hsListBox.append(hsList);
-    };
-  };
+function homeScreen() {
+    startQuizInfo.classList.add("shown");
+};
 
+function hideScoreScreen() {
+    highscoreScreen.classList.remove("shown");
+   
+    homeScreen();
+  };
+function scoreScreen() {
+    highscoreScreen.classList.add("shown")
+    timeScores.classList.remove("shown");
+    var hsListBox = document.getElementById("hs-list-box");
+    var backButton;
+    var clearHsButton;
+ function showhsList() {
+    hsListBox.innerHTML = "";
+    var heading = document.createElement("h1").textContent = "High Scores";
+    var hsList = document.createElement("ol");
+    hsList.className = "hs-list-class"
+    hsListBox.append(heading);
+    // var hsInfo = JSON.parse(localStorage.getItem("highscores"));
+    for (var i = 0; i < highscores.length; i++) {
+    var listItems = document.createElement("li");
+    listItems.textContent = highscores[i].name + ': ' + highscores[i].score;
+    // listItems.append(hsName, hsScore);
+        hsList.append(listItems);
+    };
+    hsListBox.append(hsList);
+    backButton = document.createElement("button");
+    backButton.className = "button-style";
+    backButton.textContent = "Go Back";
+    hsListBox.append(backButton);
+
+    clearHsButton = document.createElement("button");
+    clearHsButton.className = "button-style";
+    clearHsButton.textContent = "Clear Highscores";
+    hsListBox.append(clearHsButton);
+};
+showhsList();
+    backButton.addEventListener('click', function(event) {
+        hideScoreScreen();
+
+    });
+
+    
+    clearHsButton.addEventListener('click', function(event) {
+        localStorage.clear();
+        highscores = [];
+        showhsList();
+    });
+
+  };
+  
+
+ 
 
   document.getElementById("start-quiz-btn").addEventListener("click", startQuiz);

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-    <header id="time-scores">
+    <header id="time-scores" class="shown hidden">
         <div class="flex header-flex">
             <h4 class="hs-show"><a href="#">View high scores</a> 
             </h4>
@@ -17,7 +17,7 @@
             </h1>
         </div>
     </header>
-<main id="start-quiz-info">
+<main id="start-quiz-info" class="shown hidden">
     <div class="center">
     <h1>Coding Quiz Challenge</h1>
     </div>
@@ -34,21 +34,23 @@
         </button>
     </div>
 </main>
-<main id="main-body">
+<main id="main-body" class="hidden">
     <div class="center" id="question-box">
     </div>
     <div class="center" id="answers-box">
     </div>
     <div class="center" id="answer-response">
-    
     </div>
 </main>
 
-<main id="enter-hs">
+<main id="enter-hs" class="hidden">
     <div class="center flex hs-form" id="highscore-input-box">
         <h1 id="all-done"></h1>
         <h4 id="score-display"></h4>
         <form id="initial-input">
+            <!-- <label for="name-box">Enter Initials</label>
+            <input type="text" id="name-box" name="name-box">
+            <input type="submit" value="Submit" class="initial-submit"> -->
 
         </form>
     </div>
@@ -56,7 +58,7 @@
 </main  >
     
 
-<main id="highscore-screen">
+<main id="highscore-screen" class="hidden">
     <div id="hs-list-box" class="center hs-list-box"></div>
 </main>
 
