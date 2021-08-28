@@ -4,8 +4,11 @@ var insertQuestion = document.getElementById("question-box");
 var insertAnswers = document.getElementById("answers-box");
 var currentQuestion = 0;
 let timeLeft = 60;
+var remainingTime; 
 var answerContainer = document.getElementById("answers-box");
 var answerResponse = document.getElementById("answer-response");
+var startQuizInfo = document.getElementById("start-quiz-info");
+var scoreSubmit = document.getElementById("enter-hs");
 var questions = [
    { question: "Commonly used data types do NOT include:", 
      answers: [
@@ -47,10 +50,10 @@ var questions = [
 
 
 function startTimer(){
-    let timer = setInterval(() => {
+    remainingTime = setInterval(() => {
         timeLeft--;
         if (timeLeft <= 0) {
-            clearInterval(timer);
+            clearInterval(remainingTime);
         };
         document.getElementById("display-time").textContent = "Time Left: " + timeLeft;
     }, 1000);
@@ -58,7 +61,7 @@ function startTimer(){
 
 function startQuiz() {
     //hide first screen 
-    var startQuizInfo = document.getElementById("start-quiz-info");
+    
    startQuizInfo.classList.add("hidden");
     generateQuestion();
     startTimer(); 
@@ -80,7 +83,6 @@ function generateQuestion() {
  answerContainer.appendChild(answerList);
 for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
  var li = document.createElement("li");
-//  li.className = "question-list"
  var button = document.createElement("button");
  button.textContent = questions[currentQuestion].answers[i];
  button.setAttribute("value", i);
@@ -121,19 +123,21 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
          };
          showRight();
     };
+   
     if (currentQuestion === questions.length -1) {
-        alert("end of test");
-        
-        // localStorage.setItem('score', timeLeft);
         enterHighscore();  
-    }; 
+    } 
+    else {
     currentQuestion++;
     generateQuestion();
+};
   });
 
+
+ 
   function enterHighscore() {
+    clearInterval(remainingTime);
     mainBody.classList.add("hidden");
-    var hsContentBox = document.getElementById("highscore-input-box");
     document.getElementById("all-done").textContent = "All done!";
     document.getElementById("score-display").textContent = "Your final score is " + timeLeft + ".";
     var nameInput = document.getElementById("initial-input");
@@ -151,6 +155,26 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     nameInput.appendChild(label);
     nameInput.appendChild(input);
     nameInput.appendChild(button);
+
+    button.addEventListener('click', function(){
+        var userInitials = document.querySelector("#name-box").value;
+
+        localStorage.setItem(userInitials, timeLeft);
+
+        saveScore();
+    });
 };
+
+function saveScore() {
+    scoreSubmit.classList.add("hidden");
+    scoreScreen();
+};
+
+function scoreScreen() {
+    var hsList = document.getElementById("hs-list");
+    var heading = document.createElement("h1").textContent = "High Scores";
+    hsList.appendChild(heading);
+  };
+
 
   document.getElementById("start-quiz-btn").addEventListener("click", startQuiz);
