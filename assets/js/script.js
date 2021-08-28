@@ -11,6 +11,8 @@ var startQuizInfo = document.getElementById("start-quiz-info");
 var scoreSubmit = document.getElementById("enter-hs");
 var highscoreScreen = document.getElementById("highscore-screen");
 var timeScores = document.getElementById("time-scores");
+var timeDisplay = document.getElementById("display-time");
+var viewHs = document.getElementById("view-hs");
 var questions = [
    { question: "Commonly used data types do NOT include:", 
      answers: [
@@ -50,8 +52,7 @@ var questions = [
      },
 ];
 
-var highscores = [];
-var highscoreBank = JSON.parse(localStorage.getItem("highscores")) 
+var highscores = []; 
 
 function startTimer(){
     remainingTime = setInterval(() => {
@@ -59,7 +60,7 @@ function startTimer(){
         if (timeLeft <= 0) {
             clearInterval(remainingTime);
         };
-        document.getElementById("display-time").textContent = "Time Left: " + timeLeft;
+        timeDisplay.textContent = "Time Left: " + timeLeft;
     }, 1000);
 };
 
@@ -98,11 +99,6 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
  answerList.appendChild(li);
 };
 };
-
-
-// end game function
-
-
 
  answerContainer.addEventListener("click", function(event) {
     var clickedButton = event.target;
@@ -197,6 +193,8 @@ function saveScore() {
 
 function homeScreen() {
     startQuizInfo.classList.add("shown");
+    timeScores.classList.remove("hidden");
+    timeDisplay.textContent = "Time Left: 0";
 };
 
 function hideScoreScreen() {
@@ -223,6 +221,7 @@ function scoreScreen() {
     // listItems.append(hsName, hsScore);
         hsList.append(listItems);
     };
+
     hsListBox.append(hsList);
     backButton = document.createElement("button");
     backButton.className = "button-style";
@@ -233,8 +232,7 @@ function scoreScreen() {
     clearHsButton.className = "button-style";
     clearHsButton.textContent = "Clear Highscores";
     hsListBox.append(clearHsButton);
-};
-showhsList();
+
     backButton.addEventListener('click', function(event) {
         hideScoreScreen();
 
@@ -247,9 +245,15 @@ showhsList();
         showhsList();
     });
 
+};
+showhsList();
+   
   };
   
-
- 
-
   document.getElementById("start-quiz-btn").addEventListener("click", startQuiz);
+
+  viewHs.addEventListener("click", function(event) {
+      startQuizInfo.classList.remove("shown");
+      scoreScreen();
+      timeScores.classList.add("hidden");
+  });
