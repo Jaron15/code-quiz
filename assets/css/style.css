@@ -81,3 +81,7 @@
 .initial-submit:hover {
     background-color: rgb(172, 99, 240);
 }
+.hs-list-box{
+    font-size:3vh;
+    font-weight: bold
+}

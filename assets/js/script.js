@@ -48,6 +48,8 @@ var questions = [
      },
 ];
 
+var highscores = [];
+var highscoreBank = JSON.parse(localStorage.getItem("highscores")) 
 
 function startTimer(){
     remainingTime = setInterval(() => {
@@ -156,24 +158,43 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     nameInput.appendChild(input);
     nameInput.appendChild(button);
 
-    button.addEventListener('click', function(){
+    button.addEventListener('click', function(event){
         var userInitials = document.querySelector("#name-box").value;
+        event.preventDefault();
 
-        localStorage.setItem(userInitials, timeLeft);
-
+        highscores.push({
+            name: userInitials,
+            score: timeLeft
+        })
+        highscores.sort(function (a, b) {
+            return b.score - a.score;
+        });
+        
+        localStorage.setItem("highscores", JSON.stringify(highscores));
+        
         saveScore();
     });
 };
 
 function saveScore() {
     scoreSubmit.classList.add("hidden");
+    document.getElementById("time-scores").classList.add("hidden");
+
     scoreScreen();
 };
 
 function scoreScreen() {
-    var hsList = document.getElementById("hs-list");
+    var hsListBox = document.getElementById("hs-list-box");
     var heading = document.createElement("h1").textContent = "High Scores";
-    hsList.appendChild(heading);
+    hsListBox.append(heading);
+    var hsList = document.createElement("ol");
+    for (var i = 0; i < highscores.length; i++) {
+    var listItems = document.createElement("li")
+    var hsName  = localStorage.getItem("highscores").name;
+    var hsScore = localStorage.getItem("highscores").score;
+    listItems.append(hsName, hsScore);
+    hsListBox.append(hsList);
+    };
   };
 
 
