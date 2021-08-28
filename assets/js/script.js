@@ -123,7 +123,7 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     };
     if (currentQuestion === questions.length -1) {
         alert("end of test");
-        clearInterval(timer);
+        
         // localStorage.setItem('score', timeLeft);
         enterHighscore();  
     }; 
