@@ -123,14 +123,14 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     };
     if (currentQuestion === questions.length -1) {
         alert("end of test");
-        console.log(timeLeft);
-        localStorage.setItem('score', timeLeft);
+        clearInterval(timer);
+        // localStorage.setItem('score', timeLeft);
         enterHighscore();  
     }; 
     currentQuestion++;
     generateQuestion();
-    // console.log(questions.length);
   });
+
   function enterHighscore() {
     mainBody.classList.add("hidden");
     var hsContentBox = document.getElementById("highscore-input-box");
@@ -151,8 +151,6 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     nameInput.appendChild(label);
     nameInput.appendChild(input);
     nameInput.appendChild(button);
-}
-
- 
+};
 
   document.getElementById("start-quiz-btn").addEventListener("click", startQuiz);
