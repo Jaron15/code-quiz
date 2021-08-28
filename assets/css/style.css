@@ -16,6 +16,9 @@
     border: 1px solid black;
     color: white
 }
+.start-btn:hover {
+    background-color: rgb(172, 99, 240);
+}
 .question-list {
     list-style: none;
     display: flex;
@@ -36,6 +39,9 @@
     height: 40px;
     margin: 5px;
   
+}
+.button-style:hover {
+    background-color: rgb(172, 99, 240);
 }
 .flex {
     display: flex;  
@@ -63,4 +69,15 @@
 .hs-form h1, h4{
     width: 100%;
     text-align: center;
+}
+.initial-submit {
+    background-color: blueviolet;
+    border-radius: 1px;
+    border: 1px solid black;
+    color: white;
+    margin: 3px;
+    height: 21px;
+}
+.initial-submit:hover {
+    background-color: rgb(172, 99, 240);
 }

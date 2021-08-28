@@ -136,11 +136,22 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     var hsContentBox = document.getElementById("highscore-input-box");
     document.getElementById("all-done").textContent = "All done!";
     document.getElementById("score-display").textContent = "Your final score is " + timeLeft + ".";
-    var nameInput = document.createElement("input");
-    nameInput.setAttribute('type', 'text');
-    document.getElementById("initial-input").textContent = "Enter initials " + nameInput;
-
-  }
+    var nameInput = document.getElementById("initial-input");
+    var label = document.createElement("label");
+    label.setAttribute("for", "name-box")
+    label.textContent = "Enter initials: ";
+    var input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("id", "name-box");
+    input.setAttribute("name", "name-box");
+    var button = document.createElement("input");
+    button.setAttribute("type", "submit");
+    button.setAttribute("value", "Submit");
+    button.className= "initial-submit";
+    nameInput.appendChild(label);
+    nameInput.appendChild(input);
+    nameInput.appendChild(button);
+}
 
  
 
