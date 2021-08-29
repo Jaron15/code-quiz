@@ -64,8 +64,8 @@ function startTimer(){
     }, 1000);
 };
 
+// set timer and question to 0 and remove start screen 
 function startQuiz() {
-    //hide first screen 
     currentQuestion = 0;
     timeLeft= 60;
     startQuizInfo.classList.remove("shown");
@@ -82,13 +82,13 @@ function generateQuestion() {
  insertAnswers.innerHTML = "";
  insertQuestion.innerHTML = "<h1>" + questions[currentQuestion].question + "</h1>";
  mainBody.appendChild(insertQuestion);
- 
   // insert answer
   answerContainer.className= "question-list-box";
   mainBody.appendChild(answerContainer);
  var answerList = document.createElement("ul");
  answerList.className= "question-list";
  answerContainer.appendChild(answerList);
+ //generate answers
 for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
  var li = document.createElement("li");
  var button = document.createElement("button");
@@ -100,9 +100,11 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
 };
 };
 
+// click function for answers
  answerContainer.addEventListener("click", function(event) {
     var clickedButton = event.target;
     var ansValue = clickedButton.value;
+    // if the answers is wrong deduct points and show message
     if (ansValue !== questions[currentQuestion].correctAnswer) {
        timeLeft = timeLeft-10;
        function showWrong() {
@@ -115,6 +117,7 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     }
     showWrong();
     }
+    // if correct show message
     else {
         function showRight() {
             var rightMessage = document.createElement("p");
@@ -126,7 +129,7 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
          };
          showRight();
     };
-   
+   // enter next screen when you reach the end of the questions
     if (currentQuestion === questions.length -1) {
         enterHighscore();  
     } 
@@ -137,7 +140,7 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
   });
 
 
- 
+ // show enter highscore screen 
   function enterHighscore() {
     clearInterval(remainingTime);
     scoreSubmit.classList.add("shown");
@@ -160,7 +163,7 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
     nameInput.appendChild(label);
     nameInput.appendChild(input);
     nameInput.appendChild(button);
-
+    //save highscores
     button.addEventListener('click', function(event){
         var userInitials = document.querySelector("#name-box").value;
         event.preventDefault();
@@ -168,73 +171,62 @@ for (var i = 0; i < questions[currentQuestion].answers.length; i++) {
         if (local) {
             highscores = local;
         } 
-        console.log(highscores);
         highscores.push({
             name: userInitials,
             score: timeLeft
         })
-        console.log(highscores);
         highscores.sort(function (a, b) {
             return b.score - a.score;
         });
         
         localStorage.setItem("highscores", JSON.stringify(highscores));
         
-        saveScore();
+        scoreScreen();
     });
 };
 
-function saveScore() {
-    scoreSubmit.classList.remove("shown");
-    document.getElementById("time-scores").classList.add("hidden");
-
-    scoreScreen();
-};
-
 function homeScreen() {
+    highscoreScreen.classList.remove("shown");
     startQuizInfo.classList.add("shown");
     timeScores.classList.remove("hidden");
     timeDisplay.textContent = "Time Left: 0";
 };
 
-function hideScoreScreen() {
-    highscoreScreen.classList.remove("shown");
-   
-    homeScreen();
-  };
 function scoreScreen() {
+    scoreSubmit.classList.remove("shown");
+    document.getElementById("time-scores").classList.add("hidden");
     highscoreScreen.classList.add("shown")
     timeScores.classList.remove("shown");
+
     var hsListBox = document.getElementById("hs-list-box");
     var backButton;
     var clearHsButton;
+    // show scores from local storage
  function showhsList() {
     hsListBox.innerHTML = "";
     var heading = document.createElement("h1").textContent = "High Scores";
     var hsList = document.createElement("ol");
     hsList.className = "hs-list-class"
     hsListBox.append(heading);
-    // var hsInfo = JSON.parse(localStorage.getItem("highscores"));
     for (var i = 0; i < highscores.length; i++) {
     var listItems = document.createElement("li");
     listItems.textContent = highscores[i].name + ': ' + highscores[i].score;
-    // listItems.append(hsName, hsScore);
         hsList.append(listItems);
     };
-
+    // back button that takes you back home
     hsListBox.append(hsList);
     backButton = document.createElement("button");
     backButton.className = "button-style";
     backButton.textContent = "Go Back";
     hsListBox.append(backButton);
-
+    // clear highscores from local storage
     clearHsButton = document.createElement("button");
     clearHsButton.className = "button-style";
     clearHsButton.textContent = "Clear Highscores";
     hsListBox.append(clearHsButton);
 
     backButton.addEventListener('click', function(event) {
-        hideScoreScreen();
+        homeScreen();
 
     });
 
@@ -247,13 +239,17 @@ function scoreScreen() {
 
 };
 showhsList();
-   
   };
-  
-  document.getElementById("start-quiz-btn").addEventListener("click", startQuiz);
 
+  // click function for start quiz
+  document.getElementById("start-quiz-btn").addEventListener("click", startQuiz);
+  
+  // click function for view highscores
   viewHs.addEventListener("click", function(event) {
+      clearInterval(remainingTime);
+      scoreSubmit.classList.remove("shown");
       startQuizInfo.classList.remove("shown");
       scoreScreen();
       timeScores.classList.add("hidden");
+      mainBody.classList.remove("shown");
   });
